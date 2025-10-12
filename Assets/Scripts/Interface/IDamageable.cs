@@ -1,0 +1,1 @@
+// IDamageable script placeholder

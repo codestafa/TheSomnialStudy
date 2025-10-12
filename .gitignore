@@ -5,6 +5,7 @@
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -73,6 +74,8 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
-/Assets/*
 
-# End of https://www.toptal.com/developers/gitignore/api/unity
+### Custom: Ignore only Assets/Assets folder ###
+/Assets/Assets/
+/Assets/Animations
+
