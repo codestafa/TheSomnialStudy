@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿// AIManager.cs - Final
+using System.Collections.Generic;
 using UnityEngine;
+using AI.Common.Navigation;
 
 namespace AI.Controller
 {
     [System.Serializable]
     public class EnemySpawnEntry
     {
-        public GameObject enemyInstance;      // Scene enemy, not prefab
-        public JobSpawnPoint[] spawnPoints;   // Possible spawn points
+        [Tooltip("Scene enemy instance, not prefab.")]
+        public GameObject enemyInstance;
+        [Tooltip("Possible spawn points for this enemy.")]
+        public JobSpawnPoint[] spawnPoints;
     }
 
     public class AIManager : MonoBehaviour
@@ -31,22 +35,15 @@ namespace AI.Controller
                 return;
             }
 
-            // Pick a random spawn point
             JobSpawnPoint chosenSpawnPoint = entry.spawnPoints[Random.Range(0, entry.spawnPoints.Length)];
 
-            // Move the existing enemy to that position
             entry.enemyInstance.transform.position = chosenSpawnPoint.transform.position;
             entry.enemyInstance.transform.rotation = Quaternion.identity;
 
-            // Ensure AIController knows its job
             AIController aiController = entry.enemyInstance.GetComponent<AIController>();
             if (aiController != null)
             {
-                aiController.SetJob(chosenSpawnPoint.jobType);
-            }
-            else
-            {
-                Debug.LogWarning($"Enemy '{entry.enemyInstance.name}' is missing an AIController component.");
+                aiController.SetSpawnContext(chosenSpawnPoint.spawnType);
             }
         }
     }

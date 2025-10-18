@@ -1,7 +1,11 @@
-// Scripts/AI/Common/Navigation/JobType.cs
-public enum JobType
+namespace AI.Common.Behavior
 {
-    Lab,
-    Office,
-    Pacing
+    public enum JobType
+    {
+        Idle,
+        Patrol,
+        Guard,
+        Investigate,
+        Wander
+    }
 }
