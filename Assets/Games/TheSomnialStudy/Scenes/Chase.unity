@@ -117842,9 +117842,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d51514c7b8583445b0326e776a78fd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIController
-  chaseSpeed: 1.025
-  patrolSpeed: 1.025
-  searchSpeed: 1.025
+  chaseSpeed: 0.5125
+  patrolSpeed: 0.5125
+  searchSpeed: 0.5125
   searchDuration: 8
   turnSmoothness: 6
   searchRadius: 6

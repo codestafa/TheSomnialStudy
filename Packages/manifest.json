@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.jiaozi158.unity-physically-based-sky-urp": "file:C:/Users/jiddy/Downloads/UnityPhysicallyBasedSkyURP-main/UnityPhysicallyBasedSkyURP-main",
     "com.unity.2d.enhancers": "1.0.0",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.assistant": "1.0.0-pre.12",

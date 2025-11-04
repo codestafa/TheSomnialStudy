@@ -1,33 +1,47 @@
 ﻿using UnityEngine;
 
-public class MyDoorController : MonoBehaviour, IInteractable
+[RequireComponent(typeof(Collider))]
+public class MyDoorController : MonoBehaviour, IInteractable, IInteractablePrompt, IInteractableConditional
 {
     [SerializeField] private Animator animator;
+    [SerializeField] private string isOpenBool = "isOpen"; // animator bool param name
+    [SerializeField] private bool isOpen = false;          // initial state
+    [SerializeField] private bool locked = false;          // example lock
 
-    private bool isOpen;
-
-    void Awake()
+    private void Awake()
     {
-        isOpen = false;
         if (!animator) animator = GetComponent<Animator>();
-
-        // Example of using TryGetComponent for debugging/verification
-        if (TryGetComponent<IInteractable>(out var interactable))
-        {
-            Debug.Log($"{name} has an IInteractable component: {interactable}");
-        }
-        else
-        {
-            Debug.LogWarning($"{name} does NOT have an IInteractable component!");
-        }
+        if (animator && HasBool(animator, isOpenBool)) animator.SetBool(isOpenBool, isOpen);
     }
 
+    // ---- Gate: only hover/press when allowed ----
+    public bool CanInteract()
+    {
+        // You can add more conditions (distance, key owned, power on, etc.)
+        return !locked; // hover/press only if not locked
+    }
+
+    // ---- Prompt shown while hovering (optional) ----
+    public string GetPrompt()
+    {
+        if (locked) return "Locked";
+        return isOpen ? "Press E to close" : "Press E to open";
+    }
+
+    // ---- Action when E is pressed ----
     public void Interact()
     {
+        if (!CanInteract()) return; // double-safety
         isOpen = !isOpen;
-        animator.SetBool("isOpen", isOpen);
+        if (animator && HasBool(animator, isOpenBool))
+            animator.SetBool(isOpenBool, isOpen);
+        // else: trigger playback via other params if that’s your setup
     }
 
-    // 👇 Needed for your raycast script to show crosshair
-    public bool CanInteract => true; // only show crosshair if the door is closed
+    private static bool HasBool(Animator a, string param)
+    {
+        foreach (var p in a.parameters)
+            if (p.type == AnimatorControllerParameterType.Bool && p.name == param) return true;
+        return false;
+    }
 }

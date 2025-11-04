@@ -19,6 +19,27 @@ MonoBehaviour:
     layerMask:
       m_Bits: 128
     evt: 450
+--- !u!114 &-2983316913680502225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
+  m_Name: DecalRendererFeature
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalRendererFeature
+  m_Active: 1
+  m_Settings:
+    technique: 0
+    maxDrawDistance: 1000
+    decalLayers: 0
+    dBufferSettings:
+      surfaceData: 2
+    screenSpaceSettings:
+      normalBlend: 0
 --- !u!114 &-206625852095210843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: RenderObjectsNormal
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
-  m_Active: 1
+  m_Active: 0
   settings:
     passTag: RenderObjectsNormal
     Event: 300
@@ -86,39 +107,38 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
-  - {fileID: 2668184528867700423}
-  - {fileID: 7651578497691765144}
-  - {fileID: -206625852095210843}
-  m_RendererFeatureMap: c72e5a3eb14b07259849ef951ade2f6aa5da73dce1ea21fd
+  - {fileID: 6495364657218927127}
+  - {fileID: -2983316913680502225}
+  m_RendererFeatureMap: 173a29e8bd2b245a2fb2a8c3122199d6
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
-  postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
+  postProcessData: {fileID: 0}
   m_AssetVersion: 3
   m_PrepassLayerMask:
     serializedVersion: 2
-    m_Bits: 3583
+    m_Bits: 4294967295
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 3583
+    m_Bits: 4294967295
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 3583
+    m_Bits: 4294967295
   m_DefaultStencilState:
-    overrideStencilState: 1
+    overrideStencilState: 0
     stencilReference: 0
     stencilCompareFunction: 8
     passOperation: 2
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
-  m_RenderingMode: 2
+  m_RenderingMode: 0
   m_DepthPrimingMode: 0
-  m_CopyDepthMode: 0
+  m_CopyDepthMode: 1
   m_DepthAttachmentFormat: 0
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
---- !u!114 &2668184528867700423
+--- !u!114 &4542244536690744654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,17 +147,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
-  m_Name: FullScreenPassRendererFeature
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Script: {fileID: 11500000, guid: af24e90db4bf58443aff8888b8b7e207, type: 3}
+  m_Name: VolumetricCloudsURP
+  m_EditorClassIdentifier: VolumetricCloudsURP::VolumetricCloudsURP
+  m_Active: 0
+  material: {fileID: 2100000, guid: 3748131af20412e478461c6445c73923, type: 2}
+  renderingDebugger: 0
+  reflectionProbe: 0
+  resolutionScale: 0.25
+  upscaleMode: 0
+  preferredRenderMode: 0
+  ambientProbe: 0
+  sunAttenuation: 0
+  resetOnStart: 0
+  outputDepth: 0
+  depthTexture: 0
+  restrictToBox: 1
+  boxCenterWS: {x: 1.94, y: 0, z: 0}
+  boxSizeWS: {x: 500.27, y: 300, z: 500}
+  enableScissor: 1
+--- !u!114 &6495364657218927127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af24e90db4bf58443aff8888b8b7e207, type: 3}
+  m_Name: VolumetricCloudsURP
+  m_EditorClassIdentifier: VolumetricCloudsURP::VolumetricCloudsURP
   m_Active: 1
-  injectionPoint: 600
-  fetchColorBuffer: 1
-  requirements: 0
-  passMaterial: {fileID: 2100000, guid: bf3cd98c2c8220a468be832f87e591d1, type: 2}
-  passIndex: 0
-  bindDepthStencilAttachment: 0
-  m_Version: 1
+  material: {fileID: 2100000, guid: 3748131af20412e478461c6445c73923, type: 2}
+  renderingDebugger: 0
+  reflectionProbe: 0
+  resolutionScale: 0.5
+  upscaleMode: 0
+  preferredRenderMode: 1
+  ambientProbe: 1
+  sunAttenuation: 0
+  resetOnStart: 1
+  outputDepth: 1
+  depthTexture: 0
+  restrictToBox: 1
+  boxCenterWS: {x: 0, y: 0, z: 0}
+  boxSizeWS: {x: 6.8, y: 140.3, z: 393.2}
+  enableScissor: 0
 --- !u!114 &7651578497691765144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,7 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
   m_Name: RenderObjects
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.RenderObjects
-  m_Active: 1
+  m_Active: 0
   settings:
     passTag: RenderObjects
     Event: 300

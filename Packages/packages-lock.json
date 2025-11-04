@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.jiaozi158.unity-physically-based-sky-urp": {
+      "version": "file:C:/Users/jiddy/Downloads/UnityPhysicallyBasedSkyURP-main/UnityPhysicallyBasedSkyURP-main",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "14.0.7"
+      }
+    },
     "com.unity.2d.common": {
       "version": "11.0.1",
       "depth": 1,
