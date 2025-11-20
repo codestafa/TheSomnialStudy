@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [Header("References")][SerializeField] private Camera playerCamera;
+    [Header("References")]
+    [SerializeField] private Camera playerCamera;
 
     [Header("Detection")]
     [SerializeField] private float interactDistance = 3f;
@@ -21,20 +22,30 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private bool enableFocusCallbacks = false;
     [SerializeField] private bool showPromptOnHover = true;
 
+    [Header("Performance")]
+    [Tooltip("How often to check for interactables (seconds). Lower = more responsive, higher = better performance.")]
+    [SerializeField] private float detectionInterval = 0.05f; // 20 checks per second instead of every frame
+
     [Header("Reticle")]
     [SerializeField] private Graphic reticleGraphic;
     [SerializeField] private Color reticleNormal = Color.white;
-    [SerializeField] private Color reticleHover = new Color(1f, 1f, 0f, 1f); // visible hover color
+    [SerializeField] private Color reticleHover = new Color(1f, 1f, 0f, 1f);
 
     [Header("UI")]
     public UnityEvent<string> onHoverPromptChanged;
 
-    [Header("Debug")][SerializeField] private bool debugMode = false;
+    [Header("Debug")]
+    [SerializeField] private bool debugMode = false;
 
     private IInteractable currentTarget;
     private float lastInteractTime = -999f;
+    private float lastDetectionTime = -999f;
     private string lastPromptSent = "";
     private bool lastHoverState = false;
+
+    // Cached values to avoid repeated calculations
+    private Ray cachedRay;
+    private bool hasCachedRay = false;
 
     private void Awake()
     {
@@ -45,15 +56,26 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnDisable()
     {
-        if (!string.IsNullOrEmpty(lastPromptSent)) { onHoverPromptChanged?.Invoke(""); lastPromptSent = ""; }
+        if (!string.IsNullOrEmpty(lastPromptSent))
+        {
+            onHoverPromptChanged?.Invoke("");
+            lastPromptSent = "";
+        }
         currentTarget = null;
         SetReticleHover(false);
     }
 
     private void Update()
     {
-        DetectInteractable();
+        // Throttle detection checks for performance
+        if (Time.time - lastDetectionTime >= detectionInterval)
+        {
+            lastDetectionTime = Time.time;
+            DetectInteractable();
+            hasCachedRay = false; // Invalidate ray cache
+        }
 
+        // Input handling can still happen every frame for responsiveness
         if (currentTarget != null && Input.GetKeyDown(interactKey) &&
             Time.time - lastInteractTime >= interactCooldown)
         {
@@ -67,19 +89,26 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (!playerCamera) return;
 
-        var ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        // Create ray once per detection cycle
+        if (!hasCachedRay)
+        {
+            cachedRay = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+            hasCachedRay = true;
+        }
+
         bool hitSomething;
         RaycastHit hit;
 
+        // Perform raycast/spherecast
         if (useSpherecast)
         {
-            hitSomething = Physics.SphereCast(ray, spherecastRadius, out hit, interactDistance, ~0, triggerInteraction);
-            if (debugMode) Debug.DrawRay(ray.origin, ray.direction * (hitSomething ? hit.distance : interactDistance), Color.cyan);
+            hitSomething = Physics.SphereCast(cachedRay, spherecastRadius, out hit, interactDistance, interactableLayers, triggerInteraction);
+            if (debugMode) Debug.DrawRay(cachedRay.origin, cachedRay.direction * (hitSomething ? hit.distance : interactDistance), Color.cyan, detectionInterval);
         }
         else
         {
-            hitSomething = Physics.Raycast(ray, out hit, interactDistance, ~0, triggerInteraction);
-            if (debugMode) Debug.DrawRay(ray.origin, ray.direction * (hitSomething ? hit.distance : interactDistance), Color.yellow);
+            hitSomething = Physics.Raycast(cachedRay, out hit, interactDistance, interactableLayers, triggerInteraction);
+            if (debugMode) Debug.DrawRay(cachedRay.origin, cachedRay.direction * (hitSomething ? hit.distance : interactDistance), Color.yellow, detectionInterval);
         }
 
         IInteractable found = null;
@@ -92,10 +121,9 @@ public class PlayerInteraction : MonoBehaviour
                 bool layerAllowed = (interactableLayers.value & (1 << c.gameObject.layer)) != 0;
                 if (layerAllowed)
                 {
-                    // ***** CONDITIONAL GATE *****
+                    // Conditional gate check
                     if (candidate is IInteractableConditional cond && !cond.CanInteract())
                     {
-                        // treat as not interactable right now
                         found = null;
                     }
                     else
@@ -103,7 +131,10 @@ public class PlayerInteraction : MonoBehaviour
                         found = candidate;
                     }
                 }
-                else if (debugMode) Debug.Log($"[PlayerInteraction] '{c.gameObject.name}' blocked by interactable layer mask.");
+                else if (debugMode)
+                {
+                    Debug.Log($"[PlayerInteraction] '{c.gameObject.name}' blocked by interactable layer mask.");
+                }
             }
             else if (debugMode)
             {
@@ -111,33 +142,44 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
+        // Only update UI if target changed
         if (!ReferenceEquals(found, currentTarget))
         {
-            if (enableFocusCallbacks && currentTarget is IInteractableFocus oldFocus)
-            {
-                try { oldFocus.OnLoseFocus(); } catch (System.Exception ex) { Debug.LogError(ex); }
-            }
+            HandleTargetChange(found);
+        }
+    }
 
-            currentTarget = found;
-            SetReticleHover(currentTarget != null);
-
-            if (enableFocusCallbacks && currentTarget is IInteractableFocus newFocus)
-            {
-                try { newFocus.OnFocus(); } catch (System.Exception ex) { Debug.LogError(ex); }
-            }
-
-            string prompt = "";
-            if (showPromptOnHover && currentTarget is IInteractablePrompt withPrompt)
-            {
-                try { prompt = withPrompt.GetPrompt() ?? ""; } catch (System.Exception ex) { Debug.LogError(ex); }
-            }
-            if (prompt != lastPromptSent) { onHoverPromptChanged?.Invoke(prompt); lastPromptSent = prompt; }
+    private void HandleTargetChange(IInteractable newTarget)
+    {
+        // Handle losing focus on old target
+        if (enableFocusCallbacks && currentTarget is IInteractableFocus oldFocus)
+        {
+            try { oldFocus.OnLoseFocus(); }
+            catch (System.Exception ex) { Debug.LogError($"[PlayerInteraction] OnLoseFocus threw: {ex}"); }
         }
 
-        if (currentTarget == null && lastPromptSent != "")
+        currentTarget = newTarget;
+        SetReticleHover(currentTarget != null);
+
+        // Handle gaining focus on new target
+        if (enableFocusCallbacks && currentTarget is IInteractableFocus newFocus)
         {
-            onHoverPromptChanged?.Invoke("");
-            lastPromptSent = "";
+            try { newFocus.OnFocus(); }
+            catch (System.Exception ex) { Debug.LogError($"[PlayerInteraction] OnFocus threw: {ex}"); }
+        }
+
+        // Update prompt
+        string prompt = "";
+        if (showPromptOnHover && currentTarget is IInteractablePrompt withPrompt)
+        {
+            try { prompt = withPrompt.GetPrompt() ?? ""; }
+            catch (System.Exception ex) { Debug.LogError($"[PlayerInteraction] GetPrompt threw: {ex}"); }
+        }
+
+        if (prompt != lastPromptSent)
+        {
+            onHoverPromptChanged?.Invoke(prompt);
+            lastPromptSent = prompt;
         }
     }
 
@@ -145,6 +187,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (!reticleGraphic) return;
         if (hovering == lastHoverState) return;
+
         reticleGraphic.color = hovering ? reticleHover : reticleNormal;
         lastHoverState = hovering;
     }
