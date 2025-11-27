@@ -37,8 +37,8 @@ TagManager:
   - Conductor
   - Clouds
   - Interactable
-  - 
-  - 
+  - Exclude
+  - ExcludeFromEffects
   - 
   - 
   - 

@@ -6,15 +6,32 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Assets/Clouds/Scenes/SampleScene.unity
+    path: Assets/Assets/Clouds/Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
     path: Assets/Games/TheSomnialStudy/Scenes/Opening.unity
     guid: 4a4755e14092ab9428974710f352c8f9
+  - enabled: 1
+    path: Assets/Games/TheSomnialStudy/Scenes/Piano.unity
+    guid: 00ad17d337a65f940adcf6e7def9f43e
+  - enabled: 1
+    path: Assets/Games/TheSomnialStudy/Scenes/Chase.unity
+    guid: dc5292cb40d284a40b7fd4e8047fd954
+  - enabled: 1
+    path: Assets/Games/TheSomnialStudy/Scenes/Clouds.unity
+    guid: 1d0712784b7af124a91eea6efd311513
+  - enabled: 1
+    path: Assets/Games/TheSomnialStudy/Scenes/Menu.unity
+    guid: ee217d2de017d944394d6d915ed8f8ba
+  - enabled: 1
+    path: Assets/Games/TheSomnialStudy/Scenes/Pianov2.unity
+    guid: ab96020aafc458647839a173d70fb911
+  - enabled: 1
+    path: Assets/Games/TheSomnialStudy/Scenes/Prototype.unity
+    guid: a1f8da57f482c1440a124fe43b61e8c2
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: f319574d659b5ad47b91067d53d244d8, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 7d8cf09ba9b1ffd40bc5e18dc4776085, type: 2}
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 758f311d4f8ff644c82c11efe178f9c5, type: 2}
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

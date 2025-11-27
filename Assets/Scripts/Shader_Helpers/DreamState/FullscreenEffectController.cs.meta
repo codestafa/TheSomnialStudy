@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 44ca1a9e5ccd722418ea8f3c0ca88098
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - dreamMaterial: {fileID: 2100000, guid: 67715ca68e2bd5b4f9d2b86d0aac1ae0, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

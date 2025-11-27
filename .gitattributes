@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+Assets/Games/TheSomnialStudy/Scenes/Clouds.unity filter=lfs diff=lfs merge=lfs -text
+Assets/Games/TheSomnialStudy/Scenes/Pianov2.unity filter=lfs diff=lfs merge=lfs -text
+Assets/Games/TheSomnialStudy/Scenes/Piano.unity filter=lfs diff=lfs merge=lfs -text

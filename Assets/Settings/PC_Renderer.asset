@@ -19,6 +19,26 @@ MonoBehaviour:
     layerMask:
       m_Bits: 128
     evt: 450
+--- !u!114 &-3068284549236207708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: FullScreenPassRendererFeature
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Active: 0
+  injectionPoint: 600
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: 12a867aaebf600840bcf2c8fd1ee8665, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
 --- !u!114 &-2983316913680502225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40,6 +60,47 @@ MonoBehaviour:
       surfaceData: 2
     screenSpaceSettings:
       normalBlend: 0
+--- !u!114 &-2362888479769561170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b221ab648ef3a5140a07a3f3b88bccd4, type: 3}
+  m_Name: ExcludableFullScreenPassRendererFeature
+  m_EditorClassIdentifier: Assembly-CSharp::ExcludableFullScreenPassRendererFeature
+  m_Active: 0
+  settings:
+    material: {fileID: 2100000, guid: 12a867aaebf600840bcf2c8fd1ee8665, type: 2}
+    renderPassEvent: 600
+--- !u!114 &-1041088421393129390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af24e90db4bf58443aff8888b8b7e207, type: 3}
+  m_Name: VolumetricCloudsURP
+  m_EditorClassIdentifier: VolumetricCloudsURP::VolumetricCloudsURP
+  m_Active: 1
+  material: {fileID: 2100000, guid: 3748131af20412e478461c6445c73923, type: 2}
+  renderingDebugger: 0
+  reflectionProbe: 0
+  resolutionScale: 1
+  upscaleMode: 0
+  preferredRenderMode: 0
+  ambientProbe: 1
+  sunAttenuation: 1
+  resetOnStart: 1
+  outputDepth: 0
+  depthTexture: 1
+  movementThreshold: 5.27
 --- !u!114 &-206625852095210843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,9 +168,14 @@ MonoBehaviour:
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
   m_RendererFeatures:
-  - {fileID: 6495364657218927127}
+  - {fileID: 8487068291719237429}
   - {fileID: -2983316913680502225}
-  m_RendererFeatureMap: 173a29e8bd2b245a2fb2a8c3122199d6
+  - {fileID: 365542750883339271}
+  - {fileID: -1041088421393129390}
+  - {fileID: 8432497292239745286}
+  - {fileID: -3068284549236207708}
+  - {fileID: 7801096003302777685}
+  m_RendererFeatureMap: 350f6818a51fc8752fb2a8c3122199d607dc9ef831ab1205522017bf984f8df106b164299c3f0675a4cff47c75436bd555e394a77b0f436c
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 0}
@@ -138,6 +204,24 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &365542750883339271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1c34126d0c3824cb7e942eb35d4fa6, type: 3}
+  m_Name: PhysicallyBasedSkyURP
+  m_EditorClassIdentifier: PBSkyURP::PhysicallyBasedSkyURP
+  m_Active: 1
+  m_Shader: {fileID: 4800000, guid: cba92fa286f80234db50615beb33eab2, type: 3}
+  m_LutShader: {fileID: 4800000, guid: b2d9c6e519415af43a8d8e54c3ca5a4d, type: 3}
+  m_Precomputation: 0
+  m_FallbackSkyMaterial: {fileID: 2100000, guid: 7c6697a3d51c9324c8e9ad3284a1ac04, type: 2}
+  m_VolumetricCloudsMaterial: {fileID: 2100000, guid: 3748131af20412e478461c6445c73923, type: 2}
 --- !u!114 &4542244536690744654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,10 +246,7 @@ MonoBehaviour:
   resetOnStart: 0
   outputDepth: 0
   depthTexture: 0
-  restrictToBox: 1
-  boxCenterWS: {x: 1.94, y: 0, z: 0}
-  boxSizeWS: {x: 500.27, y: 300, z: 500}
-  enableScissor: 1
+  movementThreshold: 2
 --- !u!114 &6495364657218927127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,21 +260,18 @@ MonoBehaviour:
   m_Name: VolumetricCloudsURP
   m_EditorClassIdentifier: VolumetricCloudsURP::VolumetricCloudsURP
   m_Active: 1
-  material: {fileID: 2100000, guid: 3748131af20412e478461c6445c73923, type: 2}
+  material: {fileID: 2100000, guid: db43b72f9ebc8ea49a64275064642a2f, type: 2}
   renderingDebugger: 0
-  reflectionProbe: 0
-  resolutionScale: 0.5
+  reflectionProbe: 1
+  resolutionScale: 1
   upscaleMode: 0
   preferredRenderMode: 1
   ambientProbe: 1
-  sunAttenuation: 0
+  sunAttenuation: 1
   resetOnStart: 1
   outputDepth: 1
-  depthTexture: 0
-  restrictToBox: 1
-  boxCenterWS: {x: 0, y: 0, z: 0}
-  boxSizeWS: {x: 6.8, y: 140.3, z: 393.2}
-  enableScissor: 0
+  depthTexture: 1
+  movementThreshold: 2
 --- !u!114 &7651578497691765144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,3 +314,63 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &7801096003302777685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f739c24638f180043ba7a8824c31f39d, type: 3}
+  m_Name: StencilExcludableFullScreenFeature
+  m_EditorClassIdentifier: Assembly-CSharp::StencilExcludableFullScreenFeature
+  m_Active: 1
+  settings:
+    effectMaterial: {fileID: 2100000, guid: 8db20f6fa3d008f4c8aaab94a08bdfcd, type: 2}
+    effectRenderEvent: 600
+    excludedLayers:
+      serializedVersion: 2
+      m_Bits: 2147614720
+    stencilValue: 1
+--- !u!114 &8432497292239745286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: FullScreenPassRendererFeature
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Active: 0
+  injectionPoint: 600
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 2100000, guid: 379ff3fe1a808ac4fb121f621fa9aefc, type: 2}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
+--- !u!114 &8487068291719237429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00045f12942b46c698459096c89274e, type: 3}
+  m_Name: FullScreenPassRendererFeature
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.FullScreenPassRendererFeature
+  m_Active: 1
+  injectionPoint: 550
+  fetchColorBuffer: 1
+  requirements: 0
+  passMaterial: {fileID: 0}
+  passIndex: 0
+  bindDepthStencilAttachment: 0
+  m_Version: 1
