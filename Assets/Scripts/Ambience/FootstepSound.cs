@@ -86,11 +86,14 @@ public class FootstepSoundImproved : MonoBehaviour
         CacheAllTransientPeaks();
 
         LogDebug($"=== INITIALIZATION COMPLETE ===", "#00FFFF");
+
+        // Start ground checking AFTER initialization (moved from OnEnable to avoid freeze during scene preload)
+        StartCoroutine(CheckGround());
     }
 
     private void OnEnable()
     {
-        StartCoroutine(CheckGround());
+        // Coroutine moved to Start() to avoid running during scene preload
     }
 
     /// <summary>

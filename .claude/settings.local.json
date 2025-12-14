@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "WebFetch(domain:discussions.unity.com)",
+      "Bash(dir:*)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": [],
     "ask": []

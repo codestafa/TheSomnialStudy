@@ -25,21 +25,40 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Brightness: 1
-    - _CRTCurvature: 0.08
-    - _ChromaticAberration: 0.003
-    - _ColorBleeding: 0.05
-    - _ColorDepth: 24
-    - _Contrast: 1.1
-    - _GlassReflection: 0.1
-    - _NoiseAmount: 0.01
-    - _PhosphorGlow: 0.4
-    - _PixelSize: 2
-    - _ScanlineIntensity: 0.15
+    - _Brightness: 1.5
+    - _CRTCurvature: 0
+    - _ChromaticAberration: 0.0015
+    - _ColorBleeding: 0.035
+    - _ColorDepth: 32
+    - _Contrast: 1.02
+    - _CornerRadius: 0
+    - _CornerSharpness: 2.3
+    - _FlickerIntensity: 0
+    - _FlickerSpeed: 10
+    - _GammaCorrection: 1.27
+    - _GlassReflection: 0
+    - _HorizontalJitter: 0.0006
+    - _NoiseAmount: 0.0061
+    - _PhosphorBloom: 0.56
+    - _PhosphorGlow: 0.17
+    - _PhosphorIntensity: 0.14
+    - _PhosphorType: 0
+    - _PixelSize: 1.4
+    - _ReflectionAngle: 0
+    - _RollingBandIntensity: 0.08
+    - _RollingBandSpeed: 2
+    - _Saturation: 0.98
+    - _ScanlineBloom: 0.52
+    - _ScanlineCount: 0.88
+    - _ScanlineIntensity: 0.13
     - _ScanlineSpeed: 5
-    - _ScreenDoorEffect: 0.15
-    - _VignetteStrength: 0.25
-    - _WarmthShift: 0.15
-    m_Colors: []
+    - _ScreenDoorEffect: 0.216
+    - _SignalNoise: 0
+    - _VignetteStrength: 0.04
+    - _WarmthShift: 0.08
+    m_Colors:
+    - _HighlightTint: {r: 1, g: 0.97999996, b: 0.9, a: 1}
+    - _ShadowTint: {r: 0.02, g: 0, b: 0.049999982, a: 1}
+    - _VignetteColor: {r: 0, g: 0, b: 0.02, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

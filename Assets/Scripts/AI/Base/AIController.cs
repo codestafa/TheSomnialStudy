@@ -15,13 +15,14 @@ public class AIController : MonoBehaviour
     private AiContext context;
 
     [Header("Behavior Settings")]
-    public float chaseSpeed = 1.5f;
-    public float patrolSpeed = 0.52f;
-    public float searchSpeed = 0.52f;
-    public float searchDuration = 8f;
-    public float turnSmoothness = 6f;
-    public float searchRadius = 6f;
-    public int maxSearchPoints = 4;
+    [Tooltip("AI chase speed - should be between player walk and sprint speed")]
+    public float chaseSpeed = 5.5f;
+    public float patrolSpeed = 1.2f;
+    public float searchSpeed = 2.0f;
+    public float searchDuration = 10f;
+    public float turnSmoothness = 8f;
+    public float searchRadius = 10f;
+    public int maxSearchPoints = 5;
 
     [Header("Optional Patrol Route")]
     public PatrolRoute patrolRoute;
@@ -37,7 +38,9 @@ public class AIController : MonoBehaviour
         var animator = GetComponent<Animator>();
         var vision = GetComponent<VisionSensor>();
         var hearing = GetComponent<HearingSensor>();
-        var playerObj = GameObject.FindGameObjectWithTag("Player");
+
+        // Defer player lookup to Update() to avoid freeze during scene preload
+        // GameObject.FindGameObjectWithTag("Player") is slow with 17K+ objects
 
         context = new AiContext
         {
@@ -46,7 +49,7 @@ public class AIController : MonoBehaviour
             Animator = animator,
             Vision = vision,
             Hearing = hearing,
-            Player = playerObj != null ? playerObj.transform : null,
+            Player = null, // Will be found in first Update()
             InitialPosition = transform.position,
             SearchRadius = searchRadius,
             MaxSearchPoints = maxSearchPoints,
@@ -64,8 +67,22 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
-        if (context == null || context.Player == null || StateMachine == null)
+        if (context == null || StateMachine == null)
             return;
+
+        // Lazy-load player reference on first Update
+        if (context.Player == null)
+        {
+            var playerObj = GameObject.FindGameObjectWithTag("Player");
+            if (playerObj != null)
+            {
+                context.Player = playerObj.transform;
+            }
+            else
+            {
+                return; // Skip this frame if player not found yet
+            }
+        }
 
         StateMachine.Update(context);
 

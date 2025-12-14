@@ -23,10 +23,16 @@ public class ExcludeFromFullScreenPass : MonoBehaviour
     {
         originalLayer = gameObject.layer;
         wasExcluded = isExcluded;
-        
+
         if (isExcluded)
         {
             gameObject.layer = exclusionLayer;
+        }
+
+        // Self-register with manager to avoid expensive FindObjectsByType scan
+        if (FullScreenPassExclusionManager.Instance != null)
+        {
+            FullScreenPassExclusionManager.Instance.RegisterExcluder(this);
         }
     }
 
@@ -34,6 +40,12 @@ public class ExcludeFromFullScreenPass : MonoBehaviour
     {
         // Restore original layer when disabled
         gameObject.layer = originalLayer;
+
+        // Unregister from manager
+        if (FullScreenPassExclusionManager.Instance != null)
+        {
+            FullScreenPassExclusionManager.Instance.UnregisterExcluder(this);
+        }
     }
 
     private void Update()

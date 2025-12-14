@@ -11,6 +11,7 @@ public class FullScreenPassExclusionManager : MonoBehaviour
     public static FullScreenPassExclusionManager Instance => instance;
 
     private List<ExcludeFromFullScreenPass> excludedObjects = new List<ExcludeFromFullScreenPass>();
+    private bool hasScannedScene = false;
 
     private void Awake()
     {
@@ -25,18 +26,32 @@ public class FullScreenPassExclusionManager : MonoBehaviour
 
     private void OnEnable()
     {
-        // Register all existing excluded objects (Unity 6 API)
-        ExcludeFromFullScreenPass[] allExcluders = FindObjectsByType<ExcludeFromFullScreenPass>(FindObjectsSortMode.None);
-        foreach (var excluder in allExcluders)
-        {
-            if (!excludedObjects.Contains(excluder))
-                excludedObjects.Add(excluder);
-        }
+        // Don't scan on enable - let objects self-register instead
+        // This prevents 17K+ object scan during scene preload
     }
 
     private void OnDisable()
     {
-        excludedObjects.Clear();
+        // Don't clear - objects should persist across scene loads
+        // excludedObjects.Clear();
+    }
+
+    /// <summary>
+    /// Lazy-load all excluded objects (only called when needed as fallback)
+    /// </summary>
+    private void EnsureScanned()
+    {
+        if (hasScannedScene)
+            return;
+
+        // Only scan once as fallback if objects haven't self-registered
+        ExcludeFromFullScreenPass[] allExcluders = FindObjectsByType<ExcludeFromFullScreenPass>(FindObjectsSortMode.None);
+        foreach (var excluder in allExcluders)
+        {
+            if (excluder != null && !excludedObjects.Contains(excluder))
+                excludedObjects.Add(excluder);
+        }
+        hasScannedScene = true;
     }
 
     /// <summary>
@@ -46,6 +61,9 @@ public class FullScreenPassExclusionManager : MonoBehaviour
     {
         if (instance == null || renderer == null)
             return false;
+
+        // Lazy-load on first use
+        instance.EnsureScanned();
 
         var excluder = renderer.GetComponent<ExcludeFromFullScreenPass>();
         return excluder != null && instance.excludedObjects.Contains(excluder);
@@ -60,6 +78,9 @@ public class FullScreenPassExclusionManager : MonoBehaviour
 
         if (instance == null)
             return excluded;
+
+        // Lazy-load on first use
+        instance.EnsureScanned();
 
         foreach (var excluder in instance.excludedObjects)
         {

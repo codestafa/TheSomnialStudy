@@ -337,10 +337,10 @@ MonoBehaviour:
     m_Value: 1
   numPrimarySteps:
     m_OverrideState: 1
-    m_Value: 32
+    m_Value: 16
   numLightSteps:
     m_OverrideState: 1
-    m_Value: 2
+    m_Value: 1
   fadeInMode:
     m_OverrideState: 1
     m_Value: 0
@@ -811,7 +811,7 @@ MonoBehaviour:
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   maxFogDistance:
     m_OverrideState: 1
-    m_Value: 5000
+    m_Value: 1500
   mipFogMaxMip:
     m_OverrideState: 1
     m_Value: 0.5
@@ -820,7 +820,7 @@ MonoBehaviour:
     m_Value: 0
   mipFogFar:
     m_OverrideState: 1
-    m_Value: 1000
+    m_Value: 500
   underWater:
     m_OverrideState: 1
     m_Value: 0

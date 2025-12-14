@@ -26,6 +26,10 @@ public class StencilExcludableFullScreenFeature : ScriptableRendererFeature
         [Tooltip("Stencil value used to mark excluded pixels")]
         [Range(1, 255)]
         public int stencilValue = 1;
+
+        [Header("Shader References (Required for Builds)")]
+        [Tooltip("The StencilWriter shader - drag Assets/shaders/PostProcessing/FullScreen/StencilWriter.shader here")]
+        public Shader stencilWriterShader;
     }
 
     public Settings settings = new Settings();
@@ -36,14 +40,23 @@ public class StencilExcludableFullScreenFeature : ScriptableRendererFeature
 
     public override void Create()
     {
-        var stencilShader = Shader.Find("Hidden/StencilWriter");
+        // Use serialized shader reference instead of Shader.Find() for build compatibility
+        Shader stencilShader = settings.stencilWriterShader;
+
+        // Fallback to Shader.Find for editor convenience (auto-find if not assigned)
+        if (stencilShader == null)
+        {
+            stencilShader = Shader.Find("Hidden/StencilWriter");
+        }
+
         if (stencilShader != null)
         {
             stencilWriterMaterial = CoreUtils.CreateEngineMaterial(stencilShader);
         }
         else
         {
-            Debug.LogError("StencilExcludableFullScreenFeature: Cannot find Hidden/StencilWriter shader!");
+            Debug.LogError("StencilExcludableFullScreenFeature: StencilWriter shader not assigned! " +
+                "Please assign the shader in the Renderer Feature settings (Assets/shaders/PostProcessing/FullScreen/StencilWriter.shader)");
         }
 
         stencilWritePass = new StencilWritePass(settings, stencilWriterMaterial);

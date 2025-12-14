@@ -13,6 +13,10 @@ namespace SceneManagement.Timeline
         [Header("Scene Loader Reference")]
         [SerializeField] private SceneLoader sceneLoader;
 
+        [Header("Seamless Transition (Recommended)")]
+        [Tooltip("Use this for seamless, pause-free scene transitions")]
+        [SerializeField] private SeamlessSceneTransition seamlessTransition;
+
         [Header("Optional: Direct Scene Settings")]
         [SerializeField] private bool useDirectLoading = false;
         [SerializeField] private string sceneName;
@@ -24,10 +28,79 @@ namespace SceneManagement.Timeline
             {
                 sceneLoader = GetComponent<SceneLoader>();
             }
+
+            // Try to find seamless transition component
+            if (seamlessTransition == null)
+            {
+                seamlessTransition = GetComponent<SeamlessSceneTransition>();
+            }
         }
 
         /// <summary>
-        /// Load scene - call this from a Timeline Signal
+        /// SEAMLESS: Preload next scene in background (call this EARLY in Timeline)
+        /// No pause, no freeze - scene loads in background while current scene plays
+        /// </summary>
+        public void PreloadNextScene()
+        {
+            if (seamlessTransition != null)
+            {
+                seamlessTransition.PreloadNextScene();
+            }
+            else
+            {
+                Debug.LogError("No SeamlessSceneTransition component assigned!");
+            }
+        }
+
+        /// <summary>
+        /// SEAMLESS: Activate preloaded scene instantly (call this at transition point)
+        /// Scene switches instantly with no loading pause!
+        /// </summary>
+        public void ActivatePreloadedScene()
+        {
+            if (seamlessTransition != null)
+            {
+                seamlessTransition.TransitionToNextScene();
+            }
+            else
+            {
+                Debug.LogError("No SeamlessSceneTransition component assigned!");
+            }
+        }
+
+        /// <summary>
+        /// SEAMLESS: Preload scene by name
+        /// </summary>
+        public void PreloadSceneByName(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                ScenePreloader.PreloadSceneStatic(name);
+            }
+            else
+            {
+                Debug.LogError("Scene name is empty!");
+            }
+        }
+
+        /// <summary>
+        /// SEAMLESS: Activate preloaded scene by name
+        /// </summary>
+        public void ActivateSceneByName(string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                ScenePreloader.ActivateSceneStatic(name);
+            }
+            else
+            {
+                Debug.LogError("Scene name is empty!");
+            }
+        }
+
+        /// <summary>
+        /// LEGACY: Load scene - call this from a Timeline Signal
+        /// WARNING: This causes a pause! Use PreloadNextScene() + ActivatePreloadedScene() instead
         /// </summary>
         public void LoadSceneFromTimeline()
         {
@@ -46,7 +119,8 @@ namespace SceneManagement.Timeline
         }
 
         /// <summary>
-        /// Load a specific scene by name - call this from a Timeline Signal
+        /// LEGACY: Load a specific scene by name - call this from a Timeline Signal
+        /// WARNING: This causes a pause! Use PreloadSceneByName() + ActivateSceneByName() instead
         /// </summary>
         public void LoadSceneByName(string name)
         {

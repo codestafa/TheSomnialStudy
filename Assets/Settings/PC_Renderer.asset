@@ -92,7 +92,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 3748131af20412e478461c6445c73923, type: 2}
   renderingDebugger: 0
   reflectionProbe: 0
-  resolutionScale: 1
+  resolutionScale: 0.5
   upscaleMode: 0
   preferredRenderMode: 0
   ambientProbe: 1
@@ -259,11 +259,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af24e90db4bf58443aff8888b8b7e207, type: 3}
   m_Name: VolumetricCloudsURP
   m_EditorClassIdentifier: VolumetricCloudsURP::VolumetricCloudsURP
-  m_Active: 1
+  m_Active: 0
   material: {fileID: 2100000, guid: db43b72f9ebc8ea49a64275064642a2f, type: 2}
   renderingDebugger: 0
   reflectionProbe: 1
-  resolutionScale: 1
+  resolutionScale: 0.5
   upscaleMode: 0
   preferredRenderMode: 1
   ambientProbe: 1
@@ -328,12 +328,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StencilExcludableFullScreenFeature
   m_Active: 1
   settings:
-    effectMaterial: {fileID: 2100000, guid: 8db20f6fa3d008f4c8aaab94a08bdfcd, type: 2}
+    effectMaterial: {fileID: 2100000, guid: e6aa3390818581145b67907c1995e3f6, type: 2}
     effectRenderEvent: 600
     excludedLayers:
       serializedVersion: 2
       m_Bits: 2147614720
     stencilValue: 1
+    stencilWriterShader: {fileID: 4800000, guid: 8ad852458b4015e40a20f4e18ec3b922, type: 3}
 --- !u!114 &8432497292239745286
 MonoBehaviour:
   m_ObjectHideFlags: 0

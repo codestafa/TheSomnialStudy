@@ -49,9 +49,21 @@ public class PianoKeySequenceDetector : MonoBehaviour
 
     private List<KeyNote> recentlyPressedKeys = new List<KeyNote>();
     private int lastCommandCount = 0;
+    private bool isInitialized = false;
 
     private void Start()
     {
+        // Defer initialization to avoid freeze during scene preload
+        // Start as coroutine to spread work over multiple frames
+        StartCoroutine(DeferredInitialization());
+    }
+
+    private System.Collections.IEnumerator DeferredInitialization()
+    {
+        // Wait a few frames to let scene settle
+        yield return null;
+        yield return null;
+
         // Auto-find piano controller if not assigned
         if (pianoController == null)
         {
@@ -62,12 +74,15 @@ public class PianoKeySequenceDetector : MonoBehaviour
         {
             Debug.LogError("PianoKeySequenceDetector: No PianoController found! Please assign one.");
             enabled = false;
-            return;
+            yield break;
         }
 
         // Find all PianoKey components and add notifier components
+        // Spread this work over multiple frames to avoid freeze
         PianoKey[] allKeys = FindObjectsOfType<PianoKey>();
-        
+        int keysProcessed = 0;
+        const int keysPerFrame = 20; // Process 20 keys per frame max
+
         foreach (var key in allKeys)
         {
             var notifier = key.gameObject.GetComponent<PianoKeyPressNotifier>();
@@ -76,7 +91,16 @@ public class PianoKeySequenceDetector : MonoBehaviour
                 notifier = key.gameObject.AddComponent<PianoKeyPressNotifier>();
             }
             notifier.Initialize(this, key);
+
+            keysProcessed++;
+            if (keysProcessed >= keysPerFrame)
+            {
+                keysProcessed = 0;
+                yield return null; // Spread work over frames
+            }
         }
+
+        isInitialized = true;
 
         if (showDebugLogs)
         {

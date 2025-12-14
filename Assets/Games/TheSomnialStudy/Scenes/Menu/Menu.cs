@@ -7,7 +7,7 @@ public class Menu : MonoBehaviour
     public void PlayGame()
     {
         // Make sure "test" is spelled exactly like your scene name
-        SceneManager.LoadScene("test");
+        SceneManager.LoadScene("Opening");
     }
 
     // Opens the settings menu (replace with actual logic later)

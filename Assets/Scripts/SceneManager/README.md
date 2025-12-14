@@ -3,15 +3,33 @@
 
 A flexible scene loading system that works with or without Timeline, supporting multiple trigger methods including proximity, interaction, and boolean conditions.
 
+## ⚡ NEW: Seamless Background Loading (RECOMMENDED)
+
+**Eliminate loading pauses and freezes!** The new seamless loading system preloads scenes in the background, creating buttery-smooth transitions without any gameplay interruption.
+
+### Why Use Seamless Loading?
+
+- ❌ **Old Way:** Timeline signal fires → 5 second freeze → scene loads → gameplay resumes
+- ✅ **New Way:** Scene loads silently in background → Timeline signal fires → instant transition!
+
+**Perfect for:** Cinematic sequences, cutscenes, and any situation where you can't afford a loading pause.
+
 ---
 
 ## 📦 Components Included
 
-1. **SceneLoader.cs** - Main scene loading manager
-2. **ProximitySceneTrigger.cs** - Load scenes via proximity zones
-3. **InteractionSceneTrigger.cs** - Load scenes via player interaction
-4. **BooleanSceneTrigger.cs** - Load scenes via boolean conditions
-5. **SceneLoaderTimeline.cs** - Timeline integration components
+### Core Loading
+1. **SceneLoader.cs** - Main scene loading manager (legacy, synchronous)
+2. **ScenePreloader.cs** - ⭐ NEW: Background scene preloader (no pauses!)
+3. **SeamlessSceneTransition.cs** - ⭐ NEW: Seamless transition manager
+
+### Triggers
+4. **ProximitySceneTrigger.cs** - Load scenes via proximity zones
+5. **InteractionSceneTrigger.cs** - Load scenes via player interaction
+6. **BooleanSceneTrigger.cs** - Load scenes via boolean conditions
+
+### Timeline Integration
+7. **SceneLoaderTimeline.cs** - Timeline integration with seamless support
 
 ---
 
